@@ -20,8 +20,6 @@ import {
   loadNoteAsync,
 } from "./storage.js";
 
-var test = 1;
-
 function setupEventListeners(): void {
   window.addEventListener("hashchange", handleHashChange);
 
