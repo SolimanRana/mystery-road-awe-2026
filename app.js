@@ -13,22 +13,20 @@ var allTimeline = [];
 var caseData = {};
 
 var currentPeopleTab = "people";
-var loadingStepsRemaining = 2; 
-
+var loadingStepsRemaining = 2;
 
 var evidenceViewLoading = true;
-
 
 var viewRendered = {
   dashboard: false,
   evidence: false,
   people: false,
   timeline: false,
-  workspace: false
+  workspace: false,
 };
 
-var notesStore = {}; 
-var modalCloseListenerCount = 0; 
+var notesStore = {};
+var modalCloseListenerCount = 0;
 
 var STORAGE_KEY_BOOKMARKS = "remotion_bookmarks";
 var STORAGE_KEY_NOTES = "remotion_notes";
@@ -85,7 +83,7 @@ function loadEvidenceData() {
     .then(function (data) {
       allEvidence = data;
       applyStoredBookmarkFlags();
-      filteredEvidence = allEvidence; 
+      filteredEvidence = allEvidence;
       renderDashboard();
       populateAllDropdowns();
       if (currentPage === "evidence") renderEvidenceList();
@@ -151,15 +149,25 @@ function findLocationById(id) {
 
 function evidenceMentionsPerson(ev, person) {
   if (!ev.personIds) return false;
-  return ev.personIds.indexOf(person.id) !== -1 || ev.personIds.indexOf(person.name) !== -1;
+  return (
+    ev.personIds.indexOf(person.id) !== -1 ||
+    ev.personIds.indexOf(person.name) !== -1
+  );
 }
 
 function formatDate(ts) {
   if (!ts) return "Unknown date";
   var d = new Date(ts);
   if (isNaN(d.getTime())) return ts;
-  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) +
-    " " + d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+  return (
+    d.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }) +
+    " " +
+    d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
+  );
 }
 
 function getStatusBadgeClass(status) {
@@ -235,15 +243,22 @@ function renderDashboard() {
 
   var reviewedCount = 0;
   for (var i = 0; i < allEvidence.length; i++) {
-    if ((allEvidence[i].status || "").toLowerCase() === "reviewed") reviewedCount++;
+    if ((allEvidence[i].status || "").toLowerCase() === "reviewed")
+      reviewedCount++;
   }
 
-  var progressPct = allEvidence.length === 0 ? 0 : Math.round((reviewedCount / allEvidence.length) * 100);
+  var progressPct =
+    allEvidence.length === 0
+      ? 0
+      : Math.round((reviewedCount / allEvidence.length) * 100);
 
   var html = "";
   html += '<div class="case-summary-card">';
   html += "<h3>" + (caseData.title || "Case") + "</h3>";
-  html += '<p><span class="badge badge-flagged">' + (caseData.status || "unknown").toUpperCase() + "</span></p>";
+  html +=
+    '<p><span class="badge badge-flagged">' +
+    (caseData.status || "unknown").toUpperCase() +
+    "</span></p>";
   html += "<p>" + (caseData.summary || "") + "</p>";
   html += "</div>";
 
@@ -257,7 +272,10 @@ function renderDashboard() {
 
   html += '<div class="dashboard-panel">';
   html += "<h3>Review progress</h3>";
-  html += '<div class="progress-bar-outer"><div class="progress-bar-inner" style="width:' + progressPct + '%;"></div></div>';
+  html +=
+    '<div class="progress-bar-outer"><div class="progress-bar-inner" style="width:' +
+    progressPct +
+    '%;"></div></div>';
   html += "<p>" + progressPct + "% of evidence reviewed</p>";
   html += "</div>";
 
@@ -270,8 +288,16 @@ function renderDashboard() {
   }
   for (var e = 0; e < recentEvidence.length; e++) {
     var ev = recentEvidence[e];
-    html += '<div class="mini-list-item"><strong>' + ev.id + "</strong> &mdash; " + ev.title +
-      ' <span class="badge ' + getStatusBadgeClass(ev.status) + '">' + ev.status + "</span></div>";
+    html +=
+      '<div class="mini-list-item"><strong>' +
+      ev.id +
+      "</strong> &mdash; " +
+      ev.title +
+      ' <span class="badge ' +
+      getStatusBadgeClass(ev.status) +
+      '">' +
+      ev.status +
+      "</span></div>";
   }
   html += "</div>";
 
@@ -282,7 +308,12 @@ function renderDashboard() {
   }
   for (var t = 0; t < recentTimeline.length; t++) {
     var evt = recentTimeline[t];
-    html += '<div class="mini-list-item"><strong>' + formatDate(evt.time) + "</strong><br>" + evt.title + "</div>";
+    html +=
+      '<div class="mini-list-item"><strong>' +
+      formatDate(evt.time) +
+      "</strong><br>" +
+      evt.title +
+      "</div>";
   }
   html += "</div>";
 
@@ -292,7 +323,13 @@ function renderDashboard() {
 }
 
 function statCardHTML(value, label) {
-  return '<div class="stat-card"><div class="stat-value">' + value + '</div><div class="stat-label">' + label + "</div></div>";
+  return (
+    '<div class="stat-card"><div class="stat-value">' +
+    value +
+    '</div><div class="stat-label">' +
+    label +
+    "</div></div>"
+  );
 }
 
 // ---------------------------------------------------------------------
@@ -318,17 +355,30 @@ function populateEvidenceDropdowns() {
   }
   typeSelect.innerHTML = '<option value="">All types</option>';
   for (var ti = 0; ti < types.length; ti++) {
-    typeSelect.innerHTML += '<option value="' + types[ti] + '">' + types[ti] + "</option>";
+    typeSelect.innerHTML +=
+      '<option value="' + types[ti] + '">' + types[ti] + "</option>";
   }
 
   personSelect.innerHTML = '<option value="">All people</option>';
   for (var p = 0; p < allPeople.length; p++) {
-    personSelect.innerHTML += '<option value="' + allPeople[p].id + '">' + allPeople[p].name + "</option>";
+    personSelect.innerHTML +=
+      '<option value="' +
+      allPeople[p].id +
+      '">' +
+      allPeople[p].name +
+      "</option>";
   }
 
   locationSelect.innerHTML = '<option value="">All locations</option>';
   for (var l = 0; l < allLocations.length; l++) {
-    locationSelect.innerHTML += '<option value="' + allLocations[l].id + '">' + allLocations[l].id + " - " + allLocations[l].name + "</option>";
+    locationSelect.innerHTML +=
+      '<option value="' +
+      allLocations[l].id +
+      '">' +
+      allLocations[l].id +
+      " - " +
+      allLocations[l].name +
+      "</option>";
   }
 }
 
@@ -347,17 +397,31 @@ function getFilteredEvidence() {
     var matches = true;
 
     if (searchTerm) {
-      var haystack = (item.title + " " + item.summary + " " + item.tags.join(" ")).toLowerCase();
+      var haystack = (
+        item.title +
+        " " +
+        item.summary +
+        " " +
+        item.tags.join(" ")
+      ).toLowerCase();
       if (haystack.indexOf(searchTerm) === -1) matches = false;
     }
-    if (matches && typeVal && item.type.toLowerCase() !== typeVal) matches = false;
+    if (matches && typeVal && item.type.toLowerCase() !== typeVal)
+      matches = false;
     if (matches && personVal) {
       var person = findPersonById(personVal);
       if (!person || !evidenceMentionsPerson(item, person)) matches = false;
     }
-    if (matches && locationVal && item.locationIds.indexOf(locationVal) === -1) matches = false;
-    if (matches && statusVal && (item.status || "").toLowerCase() !== statusVal) matches = false;
-    if (matches && relevanceVal && (item.relevance || "").toLowerCase() !== relevanceVal) matches = false;
+    if (matches && locationVal && item.locationIds.indexOf(locationVal) === -1)
+      matches = false;
+    if (matches && statusVal && (item.status || "").toLowerCase() !== statusVal)
+      matches = false;
+    if (
+      matches &&
+      relevanceVal &&
+      (item.relevance || "").toLowerCase() !== relevanceVal
+    )
+      matches = false;
 
     if (matches) results.push(item);
   }
@@ -393,20 +457,45 @@ function renderEvidenceList() {
   container.addEventListener("click", handleEvidenceListClick);
 }
 
-
 function renderEvidenceCardHTML(ev) {
   var isBookmarked = bookmarks.indexOf(ev.id) !== -1;
   var html = '<div class="evidence-card" data-id="' + ev.id + '">';
-  html += '<button class="bookmark-btn ' + (isBookmarked ? "active" : "") + '" data-action="bookmark" data-id="' + ev.id + '" aria-label="Toggle bookmark for ' + ev.title + '"><span class="bookmark-icon">' + (isBookmarked ? "★" : "☆") + "</span></button>";
+  html +=
+    '<button class="bookmark-btn ' +
+    (isBookmarked ? "active" : "") +
+    '" data-action="bookmark" data-id="' +
+    ev.id +
+    '" aria-label="Toggle bookmark for ' +
+    ev.title +
+    '"><span class="bookmark-icon">' +
+    (isBookmarked ? "★" : "☆") +
+    "</span></button>";
   html += "<h3>" + ev.title + "</h3>";
-  html += '<div class="evidence-meta">' + ev.id + " &middot; " + ev.type + " &middot; " + formatDate(ev.timestamp) + "</div>";
+  html +=
+    '<div class="evidence-meta">' +
+    ev.id +
+    " &middot; " +
+    ev.type +
+    " &middot; " +
+    formatDate(ev.timestamp) +
+    "</div>";
   html += '<div class="evidence-summary">' + ev.summary + "</div>";
 
   if (ev.tags.indexOf("critical") !== -1) {
     html += '<span class="badge badge-critical">Critical</span>';
   }
-  html += '<span class="badge ' + getStatusBadgeClass(ev.status) + '">' + ev.status + "</span>";
-  html += '<span class="badge ' + getRelevanceBadgeClass(ev.relevance) + '">' + ev.relevance + "</span>";
+  html +=
+    '<span class="badge ' +
+    getStatusBadgeClass(ev.status) +
+    '">' +
+    ev.status +
+    "</span>";
+  html +=
+    '<span class="badge ' +
+    getRelevanceBadgeClass(ev.relevance) +
+    '">' +
+    ev.relevance +
+    "</span>";
   html += "<div>";
   for (var t = 0; t < ev.tags.length; t++) {
     html += '<span class="tag-chip">' + ev.tags[t] + "</span>";
@@ -556,19 +645,38 @@ function renderEvidenceDetail(ev) {
   var html = "";
   html += '<div class="evidence-detail-header">';
   html += "<div><h2>" + ev.title + "</h2>";
-  html += '<div class="evidence-meta">' + ev.id + " &middot; " + ev.type + " &middot; " + formatDate(ev.timestamp) + "</div></div>";
-  html += '<button type="button" class="btn btn-secondary btn-small" onclick="closeEvidenceDetail()">Close</button>';
+  html +=
+    '<div class="evidence-meta">' +
+    ev.id +
+    " &middot; " +
+    ev.type +
+    " &middot; " +
+    formatDate(ev.timestamp) +
+    "</div></div>";
+  html +=
+    '<button type="button" class="btn btn-secondary btn-small" onclick="closeEvidenceDetail()">Close</button>';
   html += "</div>";
 
   if (ev.tags.indexOf("critical") !== -1) {
-    html += '<div class="warning-banner">This item is tagged as critical evidence.</div>';
+    html +=
+      '<div class="warning-banner">This item is tagged as critical evidence.</div>';
   }
 
-  html += '<div class="detail-field"><strong>Summary</strong>' + ev.summary + "</div>";
+  html +=
+    '<div class="detail-field"><strong>Summary</strong>' +
+    ev.summary +
+    "</div>";
   html += '<div class="evidence-detail-content">' + ev.content + "</div>";
-  html += '<div class="detail-field"><strong>Related people</strong>' + personNames.join(", ") + "</div>";
-  html += '<div class="detail-field"><strong>Related locations</strong>' + locationNames.join(", ") + "</div>";
-  html += '<div class="detail-field"><strong>Tags</strong>' + tagsHtml + "</div>";
+  html +=
+    '<div class="detail-field"><strong>Related people</strong>' +
+    personNames.join(", ") +
+    "</div>";
+  html +=
+    '<div class="detail-field"><strong>Related locations</strong>' +
+    locationNames.join(", ") +
+    "</div>";
+  html +=
+    '<div class="detail-field"><strong>Tags</strong>' + tagsHtml + "</div>";
 
   html += '<div class="detail-field"><strong>Review status</strong>';
   html += '<select id="detailStatusSelect">';
@@ -585,24 +693,37 @@ function renderEvidenceDetail(ev) {
   html += "</select></div>";
 
   html += '<div class="detail-field"><strong>Investigator note</strong>';
-  html += '<textarea id="evidenceNoteInput" class="note-textarea" rows="3" data-evidence-id="' + ev.id + '" placeholder="Add a private note about this evidence...">' + storedNote + "</textarea>";
-  html += '<button type="button" class="btn btn-primary btn-small" style="margin-top:6px;" onclick="saveCurrentNote()">Save note</button>';
+  html +=
+    '<textarea id="evidenceNoteInput" class="note-textarea" rows="3" data-evidence-id="' +
+    ev.id +
+    '" placeholder="Add a private note about this evidence...">' +
+    storedNote +
+    "</textarea>";
+  html +=
+    '<button type="button" class="btn btn-primary btn-small" style="margin-top:6px;" onclick="saveCurrentNote()">Save note</button>';
   html += "</div>";
 
-  html += '<div class="detail-field"><strong>Note preview</strong><div id="notePreview">' + storedNote + "</div></div>";
+  html +=
+    '<div class="detail-field"><strong>Note preview</strong><div id="notePreview">' +
+    storedNote +
+    "</div></div>";
 
   section.innerHTML = html;
 
-  document.getElementById("detailStatusSelect").addEventListener("change", function (e) {
-    ev.status = e.target.value; // direct mutation of the loaded evidence object
-    renderEvidenceDetail(ev);
-    if (viewRendered.evidence) renderEvidenceList();
-  });
-  document.getElementById("detailRelevanceSelect").addEventListener("change", function (e) {
-    ev.relevance = e.target.value;
-    renderEvidenceDetail(ev);
-    if (viewRendered.evidence) renderEvidenceList();
-  });
+  document
+    .getElementById("detailStatusSelect")
+    .addEventListener("change", function (e) {
+      ev.status = e.target.value; // direct mutation of the loaded evidence object
+      renderEvidenceDetail(ev);
+      if (viewRendered.evidence) renderEvidenceList();
+    });
+  document
+    .getElementById("detailRelevanceSelect")
+    .addEventListener("change", function (e) {
+      ev.relevance = e.target.value;
+      renderEvidenceDetail(ev);
+      if (viewRendered.evidence) renderEvidenceList();
+    });
 }
 
 function statusOptionHTML(current, value, label) {
@@ -662,8 +783,18 @@ function renderPeople() {
 
     html += '<div class="person-card">';
     html += '<div class="person-card-header">';
-    html += '<img class="person-avatar" src="' + person.avatar + '" alt="Portrait of ' + person.name + '">';
-    html += "<div><h3>" + person.name + "</h3><div class=\"person-role\">" + person.role + "</div></div>";
+    html +=
+      '<img class="person-avatar" src="' +
+      person.avatar +
+      '" alt="Portrait of ' +
+      person.name +
+      '">';
+    html +=
+      "<div><h3>" +
+      person.name +
+      '</h3><div class="person-role">' +
+      person.role +
+      "</div></div>";
     html += "</div>";
     html += "<p><strong>Speciality:</strong> " + person.speciality + "</p>";
     html += "<ul>";
@@ -671,9 +802,20 @@ function renderPeople() {
       html += "<li>" + person.responsibilities[r] + "</li>";
     }
     html += "</ul>";
-    html += '<div class="person-statement">&ldquo;' + person.statement + '&rdquo;</div>';
-    html += "<p>" + count + " related evidence item" + (count === 1 ? "" : "s") + " &mdash; ";
-    html += '<button type="button" class="evidence-count-link" data-person-id="' + person.id + '">view</button></p>';
+    html +=
+      '<div class="person-statement">&ldquo;' +
+      person.statement +
+      "&rdquo;</div>";
+    html +=
+      "<p>" +
+      count +
+      " related evidence item" +
+      (count === 1 ? "" : "s") +
+      " &mdash; ";
+    html +=
+      '<button type="button" class="evidence-count-link" data-person-id="' +
+      person.id +
+      '">view</button></p>';
     html += "</div>";
   }
   container.innerHTML = html;
@@ -720,21 +862,33 @@ function populateTimelineDropdowns() {
 
   personSelect.innerHTML = '<option value="">All people</option>';
   for (var p = 0; p < allPeople.length; p++) {
-    personSelect.innerHTML += '<option value="' + allPeople[p].id + '">' + allPeople[p].name + "</option>";
+    personSelect.innerHTML +=
+      '<option value="' +
+      allPeople[p].id +
+      '">' +
+      allPeople[p].name +
+      "</option>";
   }
 
   locationSelect.innerHTML = '<option value="">All locations</option>';
   for (var l = 0; l < allLocations.length; l++) {
-    locationSelect.innerHTML += '<option value="' + allLocations[l].id + '">' + allLocations[l].id + "</option>";
+    locationSelect.innerHTML +=
+      '<option value="' +
+      allLocations[l].id +
+      '">' +
+      allLocations[l].id +
+      "</option>";
   }
 
   var types = [];
   for (var i = 0; i < allTimeline.length; i++) {
-    if (types.indexOf(allTimeline[i].type) === -1) types.push(allTimeline[i].type);
+    if (types.indexOf(allTimeline[i].type) === -1)
+      types.push(allTimeline[i].type);
   }
   typeSelect.innerHTML = '<option value="">All event types</option>';
   for (var t = 0; t < types.length; t++) {
-    typeSelect.innerHTML += '<option value="' + types[t] + '">' + types[t] + "</option>";
+    typeSelect.innerHTML +=
+      '<option value="' + types[t] + '">' + types[t] + "</option>";
   }
 }
 
@@ -751,7 +905,8 @@ function renderTimeline() {
   for (var i = 0; i < allTimeline.length; i++) {
     var evt = allTimeline[i];
     if (personFilter && evt.personIds.indexOf(personFilter) === -1) continue;
-    if (locationFilter && evt.locationIds.indexOf(locationFilter) === -1) continue;
+    if (locationFilter && evt.locationIds.indexOf(locationFilter) === -1)
+      continue;
     if (typeFilter && evt.type !== typeFilter) continue;
     events.push(evt);
   }
@@ -765,7 +920,14 @@ function renderTimeline() {
   for (var e = 0; e < events.length; e++) {
     var item = events[e];
     html += '<div class="timeline-event certainty-' + item.certainty + '">';
-    html += '<div class="timeline-time">' + formatDate(item.time) + '&nbsp;&middot;&nbsp;<span class="badge badge-' + certaintyBadgeClass(item.certainty) + '">' + item.certainty + "</span></div>";
+    html +=
+      '<div class="timeline-time">' +
+      formatDate(item.time) +
+      '&nbsp;&middot;&nbsp;<span class="badge badge-' +
+      certaintyBadgeClass(item.certainty) +
+      '">' +
+      item.certainty +
+      "</span></div>";
     html += "<h3>" + item.title + "</h3>";
     html += "<p>" + item.description + "</p>";
 
@@ -775,11 +937,19 @@ function renderTimeline() {
       eventLocationNames.push(evtLoc || item.locationIds[el]);
     }
     if (eventLocationNames.length > 0) {
-      html += '<p class="evidence-meta">Location: ' + eventLocationNames.join(", ") + "</p>";
+      html +=
+        '<p class="evidence-meta">Location: ' +
+        eventLocationNames.join(", ") +
+        "</p>";
     }
 
     for (var ev2 = 0; ev2 < item.evidenceIds.length; ev2++) {
-      html += '<button type="button" class="evidence-link-btn" data-evidence-id="' + item.evidenceIds[ev2] + '">View ' + item.evidenceIds[ev2] + "</button>";
+      html +=
+        '<button type="button" class="evidence-link-btn" data-evidence-id="' +
+        item.evidenceIds[ev2] +
+        '">View ' +
+        item.evidenceIds[ev2] +
+        "</button>";
     }
     html += "</div>";
   }
@@ -818,17 +988,32 @@ function openEvidenceModal(evidenceId) {
   modal.innerHTML =
     '<div class="modal-backdrop"><div class="modal-box">' +
     '<button type="button" class="modal-close-btn" aria-label="Close">&times;</button>' +
-    "<h3>" + ev.title + "</h3>" +
-    '<p class="evidence-meta">' + ev.id + " &middot; " + ev.type + " &middot; " + formatDate(ev.timestamp) + "</p>" +
-    "<p>" + ev.summary + "</p>" +
-    '<button type="button" class="btn btn-primary btn-small" data-open-full="' + ev.id + '">Open full evidence</button>' +
+    "<h3>" +
+    ev.title +
+    "</h3>" +
+    '<p class="evidence-meta">' +
+    ev.id +
+    " &middot; " +
+    ev.type +
+    " &middot; " +
+    formatDate(ev.timestamp) +
+    "</p>" +
+    "<p>" +
+    ev.summary +
+    "</p>" +
+    '<button type="button" class="btn btn-primary btn-small" data-open-full="' +
+    ev.id +
+    '">Open full evidence</button>' +
     "</div></div>";
 
   modalCloseListenerCount++;
   console.log("modal opened, active close listeners:", modalCloseListenerCount);
 
   modal.addEventListener("click", function (e) {
-    if (e.target.classList.contains("modal-close-btn") || e.target.classList.contains("modal-backdrop")) {
+    if (
+      e.target.classList.contains("modal-close-btn") ||
+      e.target.classList.contains("modal-backdrop")
+    ) {
       modal.innerHTML = "";
     }
     if (e.target.getAttribute && e.target.getAttribute("data-open-full")) {
@@ -861,15 +1046,22 @@ function renderBookmarksList() {
   });
 
   if (bookmarkedItems.length === 0) {
-    container.innerHTML = "<p>No bookmarked evidence yet. Bookmark items from the Evidence view.</p>";
+    container.innerHTML =
+      "<p>No bookmarked evidence yet. Bookmark items from the Evidence view.</p>";
     return;
   }
 
   var html = "";
   for (var i = 0; i < bookmarkedItems.length; i++) {
     var ev = bookmarkedItems[i];
-    html += '<div class="mini-list-item"><strong>' + ev.id + "</strong> &mdash; " + ev.title +
-      ' <button type="button" class="btn btn-small btn-secondary" data-open-evidence="' + ev.id + '">Open</button></div>';
+    html +=
+      '<div class="mini-list-item"><strong>' +
+      ev.id +
+      "</strong> &mdash; " +
+      ev.title +
+      ' <button type="button" class="btn btn-small btn-secondary" data-open-evidence="' +
+      ev.id +
+      '">Open</button></div>';
   }
   container.innerHTML = html;
 
@@ -893,20 +1085,31 @@ function renderNotesList() {
   for (var i = 0; i < allEvidence.length; i++) {
     var note = notesStore[allEvidence[i].id];
     if (note) {
-      noteEntries.push({ index: i, evidenceId: allEvidence[i].id, title: allEvidence[i].title, text: note });
+      noteEntries.push({
+        index: i,
+        evidenceId: allEvidence[i].id,
+        title: allEvidence[i].title,
+        text: note,
+      });
     }
   }
 
   if (noteEntries.length === 0) {
-    container.innerHTML = "<p>No notes yet. Add one from an evidence item's detail view.</p>";
+    container.innerHTML =
+      "<p>No notes yet. Add one from an evidence item's detail view.</p>";
     return;
   }
 
   var html = "";
   for (var n = 0; n < noteEntries.length; n++) {
     var entry = noteEntries[n];
-    html += '<div class="mini-list-item"><strong>' + entry.evidenceId + "</strong> &mdash; " + entry.title;
-    html += '<div id="noteText-' + entry.index + '">' + entry.text + "</div></div>"; // unsafe innerHTML rendering, same as the note preview
+    html +=
+      '<div class="mini-list-item"><strong>' +
+      entry.evidenceId +
+      "</strong> &mdash; " +
+      entry.title;
+    html +=
+      '<div id="noteText-' + entry.index + '">' + entry.text + "</div></div>"; // unsafe innerHTML rendering, same as the note preview
   }
   container.innerHTML = html;
 }
@@ -919,13 +1122,25 @@ function populateHypothesisDropdowns() {
   var currentSuspect = suspectSelect.value;
   suspectSelect.innerHTML = '<option value="">Select a person…</option>';
   for (var p = 0; p < allPeople.length; p++) {
-    suspectSelect.innerHTML += '<option value="' + allPeople[p].id + '">' + allPeople[p].name + "</option>";
+    suspectSelect.innerHTML +=
+      '<option value="' +
+      allPeople[p].id +
+      '">' +
+      allPeople[p].name +
+      "</option>";
   }
   suspectSelect.value = currentSuspect;
 
   evidenceSelect.innerHTML = "";
   for (var i = 0; i < allEvidence.length; i++) {
-    evidenceSelect.innerHTML += '<option value="' + allEvidence[i].id + '">' + allEvidence[i].id + " - " + allEvidence[i].title + "</option>";
+    evidenceSelect.innerHTML +=
+      '<option value="' +
+      allEvidence[i].id +
+      '">' +
+      allEvidence[i].id +
+      " - " +
+      allEvidence[i].title +
+      "</option>";
   }
 }
 
@@ -937,7 +1152,7 @@ function saveHypothesis() {
     confidence: document.getElementById("hypConfidence").value,
     explanation: document.getElementById("hypExplanation").value,
     alternative: document.getElementById("hypAlternative").value,
-    savedAt: new Date().toISOString()
+    savedAt: new Date().toISOString(),
   };
 
   try {
@@ -967,19 +1182,21 @@ function loadHypothesisFromStorage() {
   var raw = localStorage.getItem(STORAGE_KEY_HYPOTHESIS);
   if (!raw) return;
 
-  var draft = JSON.parse(raw); 
+  var draft = JSON.parse(raw);
 
   document.getElementById("hypSuspect").value = draft.suspectId || "";
   document.getElementById("hypNature").value = draft.nature || "";
   document.getElementById("hypConfidence").value = draft.confidence || 50;
-  document.getElementById("hypConfidenceValue").textContent = draft.confidence || 50;
+  document.getElementById("hypConfidenceValue").textContent =
+    draft.confidence || 50;
   document.getElementById("hypExplanation").value = draft.explanation || "";
   document.getElementById("hypAlternative").value = draft.alternative || "";
 
   var evidenceSelect = document.getElementById("hypEvidence");
   var savedIds = draft.evidenceIds || [];
   for (var i = 0; i < evidenceSelect.options.length; i++) {
-    evidenceSelect.options[i].selected = savedIds.indexOf(evidenceSelect.options[i].value) !== -1;
+    evidenceSelect.options[i].selected =
+      savedIds.indexOf(evidenceSelect.options[i].value) !== -1;
   }
 }
 
@@ -1042,27 +1259,54 @@ function setupEventListeners() {
     });
   }
 
-  document.getElementById("evidenceSearch").addEventListener("input", handleSearchInput);
+  document
+    .getElementById("evidenceSearch")
+    .addEventListener("input", handleSearchInput);
 
-  document.getElementById("filterType").addEventListener("change", renderEvidenceList);
-  document.getElementById("filterPerson").addEventListener("change", renderEvidenceList);
-  document.getElementById("filterLocation").addEventListener("change", renderEvidenceList);
+  document
+    .getElementById("filterType")
+    .addEventListener("change", renderEvidenceList);
+  document
+    .getElementById("filterPerson")
+    .addEventListener("change", renderEvidenceList);
+  document
+    .getElementById("filterLocation")
+    .addEventListener("change", renderEvidenceList);
 
-  document.getElementById("filterStatus").addEventListener("change", renderEvidenceList);
-  document.getElementById("filterStatus").setAttribute("onchange", "renderEvidenceList()");
+  document
+    .getElementById("filterStatus")
+    .addEventListener("change", renderEvidenceList);
+  document
+    .getElementById("filterStatus")
+    .setAttribute("onchange", "renderEvidenceList()");
 
-  document.getElementById("filterRelevance").addEventListener("change", renderEvidenceList);
+  document
+    .getElementById("filterRelevance")
+    .addEventListener("change", renderEvidenceList);
 
-  document.getElementById("clearFiltersBtn").addEventListener("click", clearFilters);
+  document
+    .getElementById("clearFiltersBtn")
+    .addEventListener("click", clearFilters);
 
-  document.getElementById("timelineOrder").addEventListener("change", renderTimeline);
-  document.getElementById("timelinePersonFilter").addEventListener("change", renderTimeline);
-  document.getElementById("timelineLocationFilter").addEventListener("change", renderTimeline);
-  document.getElementById("timelineTypeFilter").addEventListener("change", renderTimeline);
+  document
+    .getElementById("timelineOrder")
+    .addEventListener("change", renderTimeline);
+  document
+    .getElementById("timelinePersonFilter")
+    .addEventListener("change", renderTimeline);
+  document
+    .getElementById("timelineLocationFilter")
+    .addEventListener("change", renderTimeline);
+  document
+    .getElementById("timelineTypeFilter")
+    .addEventListener("change", renderTimeline);
 
-  document.getElementById("hypConfidence").addEventListener("input", function (e) {
-    document.getElementById("hypConfidenceValue").textContent = e.target.value;
-  });
+  document
+    .getElementById("hypConfidence")
+    .addEventListener("input", function (e) {
+      document.getElementById("hypConfidenceValue").textContent =
+        e.target.value;
+    });
 }
 
 // ---------------------------------------------------------------------

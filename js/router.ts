@@ -15,16 +15,9 @@
 // any of its other top-level code has run. `const`/`let` bindings
 // (including `const navigateTo = () => {}`) are NOT usable until their
 // declaration line has actually executed; they sit in the "temporal dead
-// zone" until then. In a normal, non-circular import that distinction
-// never matters. But in a circular import, one module can start running
-// while the other is only partially finished initializing - if anything
-// ever called into this cycle during that window, a function declaration
-// would still work while a const arrow function would throw
-// "Cannot access 'navigateTo' before initialization". Nothing in this
-// app hits that window today (navigateTo is only ever called from inside
-// later event handlers, not from top-level module code), so nothing
-// would break right now - but converting it would trade a real safety
-// margin for a purely cosmetic win, so it stays a function declaration.
+// zone" until then. Nothing in this app hits that window today, but
+// converting it would trade a real safety margin for a purely cosmetic
+// win, so it stays a function declaration.
 
 import { getViewRendered, setCurrentPage } from "./state.js";
 import renderDashboard from "./views/dashboard.js";
@@ -33,30 +26,42 @@ import { renderPeople, renderLocations } from "./views/people.js";
 import { renderTimeline } from "./views/timeline.js";
 import renderWorkspace from "./views/workspace.js";
 
-export function navigateTo(viewName) {
+export function navigateTo(viewName: string): void {
   window.location.hash = viewName;
   // handleHashChange() will pick this up via the hashchange listener
 }
 
-export function handleHashChange() {
+export function handleHashChange(): void {
   let hash = window.location.hash.replace("#", "");
-  const validViews = ["dashboard", "evidence", "people", "timeline", "workspace"];
+  const validViews = [
+    "dashboard",
+    "evidence",
+    "people",
+    "timeline",
+    "workspace",
+  ];
   if (validViews.indexOf(hash) === -1) {
     hash = "dashboard";
   }
   setCurrentPage(hash);
 
   const sections = document.querySelectorAll(".view");
-  for (let i = 0; i < sections.length; i++) {
-    sections[i].classList.remove("active");
+  for (const section of sections) {
+    section.classList.remove("active");
   }
-  document.getElementById("view-" + hash).classList.add("active");
+  // DEMO 7: getElementById returns `HTMLElement | null`. `hash` is always
+  // one of the five known view names by this point (checked above), so the
+  // matching #view-<hash> element genuinely always exists in index.html -
+  // the `!` here is a deliberate, justified assertion, not a shortcut
+  // around thinking about it (see the Demo 7 writeup for a spot where a
+  // real type error was NOT this kind of straightforward "trust me").
+  document.getElementById("view-" + hash)!.classList.add("active");
 
   const navButtons = document.querySelectorAll(".nav-btn");
-  for (let n = 0; n < navButtons.length; n++) {
-    navButtons[n].classList.remove("active");
-    if (navButtons[n].getAttribute("data-view") === hash) {
-      navButtons[n].classList.add("active");
+  for (const btn of navButtons) {
+    btn.classList.remove("active");
+    if (btn.getAttribute("data-view") === hash) {
+      btn.classList.add("active");
     }
   }
 
@@ -81,4 +86,9 @@ export function handleHashChange() {
   }
 }
 
+declare global {
+  interface Window {
+    navigateTo: typeof navigateTo;
+  }
+}
 window.navigateTo = navigateTo;

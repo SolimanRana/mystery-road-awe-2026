@@ -4,7 +4,13 @@
   "version": "0.1.0",
   "description": "Investigate the failure of an AI-assisted rehabilitation robot.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint js/",
+    "lint:fix": "eslint js/ --fix",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -20,5 +26,12 @@
   "homepage": "https://github.com/SolimanRana/mystery-road-awe-2026#readme",
   "dependencies": {
     "date-fns": "^4.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.11.0",
+    "prettier": "^3.9.8",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^8.3.0"
   }
 }

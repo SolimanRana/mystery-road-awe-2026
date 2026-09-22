@@ -227,7 +227,13 @@
     "timestamp": "2026-10-15T23:59:00Z",
     "summary": "Several team members had legitimate reasons to access the laboratory or infrastructure the previous evening.",
     "content": "Combined badge access summary, 2026-10-15 evening:\nKernel Colt - L01 18:50-19:40 (approved maintenance window)\nRefactor Rex - L01 17:50-18:55 (dashboard update)\nNova Byte - L03, L05 17:00-17:30 (studio session)\nRoot Harbor - L04 19:45-23:35, L05 20:03-20:10 (migration + backup media)\nSignal Scholar - no badge activity recorded after 18:00\nNote: svc-remotion shared maintenance account was active 20:00-23:31 and does not map to an individual badge holder.",
-    "personIds": ["kernel-colt", "refactor-rex", "nova-byte", "root-harbor", "signal-scholar"],
+    "personIds": [
+      "kernel-colt",
+      "refactor-rex",
+      "nova-byte",
+      "root-harbor",
+      "signal-scholar"
+    ],
     "locationIds": ["L01", "L03", "L04", "L05"],
     "tags": ["access", "infrastructure"],
     "status": "unreviewed",

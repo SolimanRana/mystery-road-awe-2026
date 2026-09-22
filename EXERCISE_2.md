@@ -33,18 +33,18 @@ presented in class.
 These checkboxes are for self-checking. Don't forget to do the actual checking of tasks you are able to present in the Moodle course. **Before class, tick only what you can genuinely demonstrate
 or answer on the spot, live.**
 
-| # | Demo | Ready? |
-|---|---|---|
-| 1 | Initialize the package manager & project metadata | ☐ |
-| 2 | Integrate Vite as the dev server | ☐ |
-| 3 | Production build & preview | ☐ |
-| 4 | `package.json` scripts: lint & format | ☐ |
-| 5 | TypeScript setup & first conversions | ☐ |
-| 6 | Typing the domain data | ☐ |
-| 7 | Full migration & resolving type errors | ☐ |
-| 8 | GitHub Actions: development workflow | ☐ |
-| 9 | GitHub Actions: deployment workflow | ☐ |
-| 10 | Workflow triggers, permissions & failure modes | ☐ |
+| #   | Demo                                              | Ready? |
+| --- | ------------------------------------------------- | ------ |
+| 1   | Initialize the package manager & project metadata | ☐      |
+| 2   | Integrate Vite as the dev server                  | ☐      |
+| 3   | Production build & preview                        | ☐      |
+| 4   | `package.json` scripts: lint & format             | ☐      |
+| 5   | TypeScript setup & first conversions              | ☐      |
+| 6   | Typing the domain data                            | ☐      |
+| 7   | Full migration & resolving type errors            | ☐      |
+| 8   | GitHub Actions: development workflow              | ☐      |
+| 9   | GitHub Actions: deployment workflow               | ☐      |
+| 10  | Workflow triggers, permissions & failure modes    | ☐      |
 
 A demo only counts as "Ready" once **every** task and question checkbox inside it (below) is
 ticked. The table above is just a fast overview, tick the boxes inside each demo first.
@@ -82,7 +82,7 @@ ticked. The table above is just a fast overview, tick the boxes inside each demo
 **Questions** (depend on the tasks above)
 
 - [ ] What is the difference between how you used to run this app (a plain static file server) and running it through Vite's dev server? Name at least one thing Vite's dev server does that a plain static server doesn't.
-- [ ] What is Hot Module Replacement, and what specifically did you observe happen (and *not* happen, e.g. to app state) when you triggered it?
+- [ ] What is Hot Module Replacement, and what specifically did you observe happen (and _not_ happen, e.g. to app state) when you triggered it?
 - [ ] Why does an app already split into ES modules (Exercise 1) integrate naturally with a tool like Vite, compared to the original single-`<script>` version?
 
 ---
@@ -203,7 +203,7 @@ ticked. The table above is just a fast overview, tick the boxes inside each demo
 
 **Tasks**
 
-- [ ] Deliberately commit a real TypeScript error (or a lint failure) that should block deployment, push it, and show the deploy workflow failing *before* it reaches the deploy step.
+- [ ] Deliberately commit a real TypeScript error (or a lint failure) that should block deployment, push it, and show the deploy workflow failing _before_ it reaches the deploy step.
 - [ ] Identify exactly what permissions and/or secrets your deploy workflow needs to publish to GitHub Pages, and show where they're configured (repository settings, the `permissions:` key in the workflow file, etc.).
 - [ ] Open the run history for both workflows and be ready to read a failed run's logs live and explain, to someone unfamiliar with it, what failed and why.
 
@@ -218,5 +218,5 @@ ticked. The table above is just a fast overview, tick the boxes inside each demo
 ## What to bring to class
 
 For each of the 10 demos: your changed code/config (ideally as commits you can diff live), the actual GitHub Actions run history for both workflows (not just the files), and the ticked checkboxes
-above reflecting what you can genuinely demonstrate and answer *right now*. Be ready to trigger a real workflow run live (e.g. via a small commit) on request, not just describe
+above reflecting what you can genuinely demonstrate and answer _right now_. Be ready to trigger a real workflow run live (e.g. via a small commit) on request, not just describe
 one that ran earlier.

@@ -25,21 +25,21 @@ These checkboxes are for self-checking. Don't forget to do the actual checking o
 able to present in the Moodle course. **Before class, go through and tick only what you can
 genuinely demonstrate or answer on the spot, live.** An unticked box is fine, but remember that you
 need to at least tick ~70% of tasks on all exercises for a positive course grade. "I fixed it" is
-not enough for any bug-related item: you need to be able to explain *why* it was broken and *why*
+not enough for any bug-related item: you need to be able to explain _why_ it was broken and _why_
 your fix works.
 
-| # | Demo | Ready? |
-|---|---|---|
-| 1 | Split the app into JS modules | ☐ |
-| 2 | Bug hunt — mutation/reference bug | ☐ |
-| 3 | Bug hunt — an asynchronous/Promise-handling bug | ☐ |
-| 4 | Bug hunt — silent (console-only) bug | ☐ |
-| 5 | Bug hunt — full walkthrough & reflection | ☐ |
-| 6 | Use the JavaScript debugger | ☐ |
-| 7 | DevTools tour (Console/Network/Application/Elements) | ☐ |
-| 8 | Clean coding: globals, `var`/`let`/`const`, code smells | ☐ |
-| 9 | Refactor nested Promises to `async`/`await` | ☐ |
-| 10 | Refactor to arrow functions | ☐ |
+| #   | Demo                                                    | Ready? |
+| --- | ------------------------------------------------------- | ------ |
+| 1   | Split the app into JS modules                           | ☐      |
+| 2   | Bug hunt — mutation/reference bug                       | ☐      |
+| 3   | Bug hunt — an asynchronous/Promise-handling bug         | ☐      |
+| 4   | Bug hunt — silent (console-only) bug                    | ☐      |
+| 5   | Bug hunt — full walkthrough & reflection                | ☐      |
+| 6   | Use the JavaScript debugger                             | ☐      |
+| 7   | DevTools tour (Console/Network/Application/Elements)    | ☐      |
+| 8   | Clean coding: globals, `var`/`let`/`const`, code smells | ☐      |
+| 9   | Refactor nested Promises to `async`/`await`             | ☐      |
+| 10  | Refactor to arrow functions                             | ☐      |
 
 A demo only counts as "Ready" once **every** task and question checkbox inside it (below) is
 ticked — the table above is just a fast overview, tick the boxes inside each demo first.
@@ -99,7 +99,7 @@ to be independent turn out to be linked).
 
 **Questions** (depend on the task above)
 
-- [ ] Explain — in your own words — the difference between a *reference* and a *copy* in
+- [ ] Explain — in your own words — the difference between a _reference_ and a _copy_ in
       JavaScript, and how that distinction explains what you observed.
 - [ ] Walk through the exact user actions and system state that trigger the bug. Could you have
       found it by reading the code top-to-bottom without running it? Why or why not?
@@ -112,7 +112,7 @@ Find and fix a bug caused by how the app handles a Promise-based operation — f
 something that should update once an async operation finishes but doesn't, or state that gets
 checked before (or without ever) being properly set by an async callback. This does not have to be
 flaky or timing-sensitive to reproduce. The point is that you can't explain the root cause without talking about
-*when*, relative to a Promise/callback, something did or didn't happen.
+_when_, relative to a Promise/callback, something did or didn't happen.
 
 **Tasks**
 
@@ -132,7 +132,7 @@ flaky or timing-sensitive to reproduce. The point is that you can't explain the 
 
 ## Demo 4 — Bug hunt: a silent bug
 
-Open DevTools *before* you start clicking around, and keep the Console tab visible for your entire
+Open DevTools _before_ you start clicking around, and keep the Console tab visible for your entire
 testing session. Find a bug that produces **no visible change in the UI** — only console output
 (an error, a warning, or an unexpected logged value).
 
@@ -179,7 +179,7 @@ same filter twice. Keep going past Demos 2–4 — this app does not have only t
 
 ## Demo 6 — Use the JavaScript debugger
 
-`console.log` is a debugging tool, not *the* debugging tool. This demo is about using the browser's
+`console.log` is a debugging tool, not _the_ debugging tool. This demo is about using the browser's
 actual debugger or a VS Code extension for debugging — ideally on one of the bugs from Demos 2–5.
 
 **Tasks**
@@ -206,7 +206,7 @@ actual debugger or a VS Code extension for debugging — ideally on one of the b
       "resume" to reach the case you care about?
 - [ ] What's the difference between a breakpoint you set in the DevTools UI and a `debugger;`
       statement written directly in the source code? When would you prefer one over the other?
-- [ ] Describe a moment where `console.log` alone would *not* have been enough to find a bug, but
+- [ ] Describe a moment where `console.log` alone would _not_ have been enough to find a bug, but
       stepping through with the debugger was. What did the debugger show you that logging couldn't?
 
 ---
@@ -237,7 +237,7 @@ A guided tour, so you know where things live before you need them.
       app's `fetch()` requests. If that request returned a 404 instead of a 200, how would the app
       currently react?
 - [ ] List this app's `localStorage` keys and what each one is for. What happens if you manually
-      corrupt one of them and reload — and *why* does that happen, according to the code that reads
+      corrupt one of them and reload — and _why_ does that happen, according to the code that reads
       it back out?
 - [ ] After throttling your network and reloading, what did you observe about which parts of the UI
       populate first, last, or briefly show wrong/empty values? Why does the order matter here?
@@ -261,7 +261,7 @@ A guided tour, so you know where things live before you need them.
 
 - [ ] What is the difference between `var`, `let`, and `const` in terms of scope and reassignment?
       Give a concrete example — from this codebase or a hypothetical grounded in a pattern you saw
-      — of a bug that `var`'s scoping rules make *possible* and `let` would prevent.
+      — of a bug that `var`'s scoping rules make _possible_ and `let` would prevent.
 - [ ] What is an "accidental global," and how does non-strict-mode JavaScript allow it to happen by
       simply forgetting a keyword? Now that your code runs as ES modules (which are always strict
       mode), what happens instead if you make that same mistake?
@@ -294,13 +294,13 @@ A guided tour, so you know where things live before you need them.
 - [ ] Explain, in your own words, why the nested `.then()` chain you sketched is harder to reason
       about than the `async`/`await` version — even though they run identically.
 - [ ] What does the `await` keyword actually do to the execution of the `async` function it's
-      inside? What is the rest of the *program* doing while that function is "waiting"?
+      inside? What is the rest of the _program_ doing while that function is "waiting"?
 - [ ] An `async` function always returns a Promise, even if the code inside it does
       `return someValue;` for a plain value. Prove you understand this: what do you get if you call
       `.then()` on the result of your refactored function, and log it?
 - [ ] What is the `async`/`await` equivalent of a `.catch()`? What happens at runtime if you forget
       it and the `await`ed operation rejects?
-- [ ] Is `async`/`await` code *faster* than the equivalent `.then()` chain? Explain precisely what
+- [ ] Is `async`/`await` code _faster_ than the equivalent `.then()` chain? Explain precisely what
       does and doesn't change about execution when you do this kind of refactor.
 - [ ] Deliberately break your own refactor by removing one `await` you just added (leaving the
       function still `async`). What breaks, and how does that relate to a category of bug you may
@@ -318,7 +318,7 @@ A guided tour, so you know where things live before you need them.
       good candidates.
 - [ ] Convert at least one anonymous `function(e) { ... }` callback passed to `addEventListener`
       into an arrow function.
-- [ ] Identify **one** function you deliberately did *not* convert (or would refuse to, if asked),
+- [ ] Identify **one** function you deliberately did _not_ convert (or would refuse to, if asked),
       and be ready to explain why it would be unsafe or incorrect as an arrow function.
 
 **Questions** (depend on the tasks above)
@@ -342,5 +342,5 @@ A guided tour, so you know where things live before you need them.
 ## What to bring to class
 
 For each of the 10 demos: your changed code (ideally as commits you can diff live), and the ticked
-checkboxes above reflecting what you can genuinely demonstrate and answer *right now*. Be ready to
+checkboxes above reflecting what you can genuinely demonstrate and answer _right now_. Be ready to
 open DevTools live on request, not just describe what you did.
